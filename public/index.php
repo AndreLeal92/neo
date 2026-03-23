@@ -1,38 +1,38 @@
 <?php
-// Definir o diretório base da aplicação
-define('BASE_PATH', __DIR__);
-
-// Iniciar a sessão e incluir os arquivos necessários
+// Iniciar a sessão
 session_start();
-require_once '../app/controllers/AuthController.php';
-require_once '../app/controllers/DashboardController.php';
-require_once '../app/models/User.php';
-require_once '../includes/db.php';
 
-// Definir a ação (login, logout, dashboard)
-$action = isset($_GET['action']) ? $_GET['action'] : 'login';
+// Variáveis para armazenar mensagens de erro e sucesso
+$error = '';
+$success = '';
 
-// Roteamento de ações
-switch ($action) {
-    case 'login':
-        $controller = new AuthController($conn);
-        $controller->showLogin();
-        break;
+// Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Captura as variáveis de usuário e senha
+    $usuario = $_POST['usuario'];
+    $senha = $_POST['senha'];
 
-    case 'logout':
-        $controller = new AuthController($conn);
-        $controller->logout();
-        break;
-
-    case 'dashboard':
-        $controller = new DashboardController();
-        $controller->index();
-        break;
-
-    default:
-        // Caso a ação não seja reconhecida, redireciona para o login
-        $controller = new AuthController($conn);
-        $controller->showLogin();
-        break;
+    // Validação simples para login (substitua com sua lógica de autenticação real)
+    if ($usuario == 'admin' && $senha == '1234') {
+        // Login bem-sucedido
+        $_SESSION['usuario'] = $usuario; // Armazenar usuário na sessão
+        $success = "Login bem-sucedido!";
+    } else {
+        // Se os dados estiverem incorretos
+        $error = "Usuário ou senha incorretos.";
+    }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
+</head>
+
+<body>
