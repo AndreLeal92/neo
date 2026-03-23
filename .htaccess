@@ -1,4 +1,16 @@
 RewriteEngine On
 
-# Redireciona todas as requisições para a pasta 'public'
-RewriteRule ^(.*)$ /public/$1 [L]
+# Permite o acesso direto às pastas de CSS, JS, Imagens e outras pastas necessárias
+RewriteRule ^assets/css/ - [L]
+RewriteRule ^assets/img/ - [L]
+RewriteRule ^assets/js/ - [L]
+RewriteRule ^public/ - [L]
+RewriteRule ^dashboard/ - [L]
+RewriteRule ^includes/ - [L]
+
+# Redireciona para o arquivo 'index.php' dentro da pasta 'public' se a URL for vazia
+RewriteRule ^$ public/index.php [L]
+
+# Redireciona outras requisições para 'index.php' dentro da pasta 'public'
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/index.php?action=$1 [QSA,L]

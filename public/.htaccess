@@ -1,4 +1,13 @@
 RewriteEngine On
 
-# Redireciona para o arquivo 'index.php' dentro da pasta 'public' se a URL for vazia
+# Permite o acesso direto a arquivos est���ticos dentro de 'public'
+RewriteRule ^assets/ - [L]
+RewriteRule ^img/ - [L]
+RewriteRule ^js/ - [L]
+
+# Certifica-se de que o redirecionamento da raiz da URL para o 'index.php' funciona corretamente
 RewriteRule ^$ index.php [L]
+
+# Redireciona todas as outras requisi������es para index.php
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ index.php?action=$1 [QSA,L]
